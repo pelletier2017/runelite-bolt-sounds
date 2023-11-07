@@ -9,6 +9,8 @@ import java.util.Optional;
 public enum SoundFile {
     // requirements (needs to be 2 ticks or less or else they overlap a lot)
 
+    // find more sound effects here https://pixabay.com/sound-effects
+
     // website to make wave files
     // youtube downloader https://ytmp3.nu/8zCl/
     // clip audio https://clideo.com/cut-audio
@@ -20,17 +22,15 @@ public enum SoundFile {
     // arrow going through target https://www.youtube.com/watch?v=bI0i2jRYTeA
     // airhorn (2-3 seconds) https://www.youtube.com/watch?v=OFr74zI1LBM
     // trumpet (2 seconds) https://www.youtube.com/watch?v=gTFoHCyXTIY
-    // among us sound https://www.youtube.com/watch?v=sbHvogpfwro
     DEFAULT("default", null),
     SILENT("silent", null),
-    GUNSHOT("cockAndShoot", "cockAndShoot.wav"),
-    GUNSHOT2("cockAndShoot2", "cockAndShoot2.wav"),
-    GUNSHOT3("gunshot3", "gunshot3.wav"),
-//    LONG_3_SHOTS("long3shots", "long3shots.wav"),
-    PEW("pew", "pew.wav"),
-    STARWARS_BLASTER("starwars blaster", "starwarsBlaster.wav"),
+    AMONGUS("among us", "amongus.wav"),
     DC17_BLASTER("dc17 blaster", "dc17Blaster.wav"),
-    F11D_BLASTER("f11d blaster", "f11dBlaster.wav"),
+    GUNSHOT3("gunshot3", "gunshot3.wav"),
+    LAZER_CANNON("lazer cannon", "lazercannon.wav"),
+    PEW("pew", "pew.wav"),
+    PISTOL_RICCOCHET("pistol riccochet", "pistol_riccochet.wav"),
+    STARWARS_BLASTER("starwars blaster", "starwarsBlaster.wav"),
     ;
 
     private final String soundName;

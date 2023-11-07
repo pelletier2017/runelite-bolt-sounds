@@ -38,16 +38,6 @@ public class BoltSoundPlugin extends Plugin {
     @Inject
     private SoundManager soundManager;
 
-    @Override
-    protected void startUp() throws Exception {
-        log.info("Example started!");
-    }
-
-    @Override
-    protected void shutDown() throws Exception {
-        log.info("Example stopped!");
-    }
-
     @Subscribe
     public void onCommandExecuted(CommandExecuted event) throws InterruptedException {
         String command = event.getCommand();
@@ -56,9 +46,8 @@ public class BoltSoundPlugin extends Plugin {
             soundManager.play(randomSound());
         }
 
-        // TODO this freezes UI while things are playing
         if (command.equals("boltsounds")) {
-            soundManager.playAll(50);
+            soundManager.playAll(1000);
         }
     }
 
