@@ -59,7 +59,7 @@ public class BoltSoundPlugin extends Plugin {
 
         // TODO this freezes UI while things are playing
         if (command.equals("boltsounds")) {
-            soundManager.playAll(3000);
+            soundManager.playAll(50);
         }
     }
 
@@ -80,24 +80,37 @@ public class BoltSoundPlugin extends Plugin {
         int id = event.getSoundId();
 
         if (id == RunescapeSound.CROSSBOW.getSoundId()) {
-            log.info("Crossbow attack sound");
-            if (config.rubyProcSound().equals(SoundFile.DEFAULT)) {
-                log.info("Default sound, doing nothing");
-                return;
-            }
-            event.consume();
-            soundManager.play(config.rubyProcSound());
-        }
+            log.info("Crossbow sound");
+            playSound(config.crossbowSound(), event);
 
-        if (id == RunescapeSound.RUBY_PROC.getSoundId()) {
+        } else if (id == RunescapeSound.RUBY_PROC.getSoundId()) {
             log.info("Ruby proc sound");
-            if (config.rubyProcSound().equals(SoundFile.DEFAULT)) {
-                log.info("Default sound, doing nothing");
-                return;
-            }
-            event.consume();
-            soundManager.play(config.rubyProcSound());
+            playSound(config.rubyProcSound(), event);
+
+        } else if (id == RunescapeSound.DIAMOND_PROC.getSoundId()) {
+            playSound(config.diamondProcSound(), event);
+
+        } else if (id == RunescapeSound.DRAGONSTONE_PROC.getSoundId()) {
+            playSound(config.dragonstoneProcSound(), event);
+
+        } else if (id == RunescapeSound.ONYX_PROC.getSoundId()) {
+            playSound(config.onyxProcSound(), event);
+
+        } else if (id == RunescapeSound.ACB_SPEC.getSoundId()) {
+            playSound(config.acbSpecSound(), event);
+
+        } else if (id == RunescapeSound.ZCB_SPEC.getSoundId()) {
+            playSound(config.zcbSpecSound(), event);
         }
+    }
+
+    private void playSound(SoundFile soundFile, SoundEffectPlayed event) {
+        if (soundFile.equals(SoundFile.DEFAULT)) {
+            log.info("Default sound, doing nothing");
+            return;
+        }
+        event.consume();
+        soundManager.play(soundFile);
     }
 
     @Provides

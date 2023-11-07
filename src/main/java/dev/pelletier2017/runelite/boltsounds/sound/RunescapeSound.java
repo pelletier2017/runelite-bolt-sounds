@@ -10,11 +10,13 @@ public enum RunescapeSound {
     RUBY_PROC(2911), // verified
     DIAMOND_PROC(2913), // verified
     DRAGONSTONE_PROC(2915), // verified
-    SAPPHIRE_PROC(2912), // verified
+
     ONYX_PROC(2917), // verified
     CROSSBOW(2695), // verified
     // TODO test with 2 tick dart sound to make sure it wont lag when overlapping sound, what about chance for double proc?
 
+    // dont include some low priority bolts
+    //    SAPPHIRE_PROC(2912), // verified
     ;
 
     private final int soundId;

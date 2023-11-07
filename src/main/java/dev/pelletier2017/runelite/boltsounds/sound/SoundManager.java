@@ -10,6 +10,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Singleton
@@ -18,11 +20,10 @@ public class SoundManager {
     @Inject
     private BoltSoundConfig config;
 
+    private ExecutorService executorService = Executors.newFixedThreadPool(5);
+
     private static Clip clip;
 
-    private static final int VOLUME = 10;
-
-    // borrowed from https://github.com/Himonn/Imbued-Fart/blob/master/src/main/java/com/imbuedfart/ImbuedFartPlugin.java
     public void play(String soundName) {
         Optional<SoundFile> soundFile = SoundFile.byName(soundName);
         if (soundFile.isEmpty()) {
@@ -32,21 +33,29 @@ public class SoundManager {
         }
     }
 
-    public void playAll(int delayMs) throws InterruptedException {
-        for (SoundFile soundFile : SoundFile.playableSounds()) {
-            play(soundFile);
-            Thread.sleep(delayMs);
-        }
+    public void playAll(int delayMs) {
+        executorService.submit(() -> {
+            for (SoundFile soundFile : SoundFile.playableSounds()) {
+                play(soundFile);
+                try {
+                    Thread.sleep(delayMs);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
+    // borrowed from https://github.com/Himonn/Imbued-Fart/blob/master/src/main/java/com/imbuedfart/ImbuedFartPlugin.java
     public void play(SoundFile soundFile) {
+
         try {
-            log.info("Start play");
+            log.info("Playing=" + soundFile.getFileName());
             if (clip != null) {
-                log.info("Start close");
-                // this is what freezes
-                clip.close();
-                log.info("End close");
+                executorService.submit(() -> {
+                    clip.close();
+                });
             }
 
             if (soundFile.equals(SoundFile.SILENT)) {
@@ -68,17 +77,21 @@ public class SoundManager {
             DataLine.Info info = new DataLine.Info(Clip.class, format);
 
             clip = (Clip) AudioSystem.getLine(info);
-            clip.open(stream);
 
-            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float volumeValue = volume.getMinimum() + ((50 + (VOLUME*5)) * ((volume.getMaximum() - volume.getMinimum()) / 100));
+            executorService.submit(() -> {
+                try {
+                    clip.open(stream);
+                } catch (LineUnavailableException | IOException e) {
+                    e.printStackTrace();
+                }
 
-            volume.setValue(volumeValue);
+                FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                float volumeValue = (float) (volume.getMinimum() + ((50 + (config.volumeLevel() / 2.0)) * ((volume.getMaximum() - volume.getMinimum()) / 100)));
+                volume.setValue(volumeValue);
 
-            log.info("before start");
-            clip.start();
-            log.info("after start");
-            log.info("end play");
+                clip.start();
+            });
+
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
