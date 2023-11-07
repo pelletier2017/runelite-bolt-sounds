@@ -11,7 +11,7 @@ public enum SoundFile {
 
     // website to make wave files
     // youtube downloader https://ytmp3.nu/8zCl/
-    // clip audio https://clideo.com/project/184013676/result
+    // clip audio https://clideo.com/cut-audio
     // convert mp3 to wav https://cloudconvert.com/mp3-to-wav
 
     // mario coin sound effects https://www.youtube.com/watch?v=gdPFOF91xb0
@@ -25,9 +25,12 @@ public enum SoundFile {
     SILENT("silent", null),
     GUNSHOT("cockAndShoot", "cockAndShoot.wav"),
     GUNSHOT2("cockAndShoot2", "cockAndShoot2.wav"),
-    LONG_3_SHOTS("long3shots", "long3shots.wav"),
-    LONG_COCK_SHOOT("longCockAndShoot", "longCockAndShoot.wav"),
+    GUNSHOT3("gunshot3", "gunshot3.wav"),
+//    LONG_3_SHOTS("long3shots", "long3shots.wav"),
     PEW("pew", "pew.wav"),
+    STARWARS_BLASTER("starwars blaster", "starwarsBlaster.wav"),
+    DC17_BLASTER("dc17 blaster", "dc17Blaster.wav"),
+    F11D_BLASTER("f11d blaster", "f11dBlaster.wav"),
     ;
 
     private final String soundName;
