@@ -20,7 +20,7 @@ public interface BoltSoundConfig extends Config {
 			position = 1
 	)
 	default int volumeLevel() {
-		return 50;
+		return 70;
 	}
 
 	@ConfigItem(

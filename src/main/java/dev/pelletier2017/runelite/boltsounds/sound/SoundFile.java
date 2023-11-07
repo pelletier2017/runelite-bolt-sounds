@@ -7,21 +7,6 @@ import java.util.Optional;
 
 @Getter
 public enum SoundFile {
-    // requirements (needs to be 2 ticks or less or else they overlap a lot)
-
-    // find more sound effects here https://pixabay.com/sound-effects
-
-    // website to make wave files
-    // youtube downloader https://ytmp3.nu/8zCl/
-    // clip audio https://clideo.com/cut-audio
-    // convert mp3 to wav https://cloudconvert.com/mp3-to-wav
-
-    // mario coin sound effects https://www.youtube.com/watch?v=gdPFOF91xb0
-    // cartoon arrow https://www.youtube.com/watch?v=c2uglXLrWgo
-    // arrow hitting target https://www.youtube.com/watch?v=LhILCoFuy3Y
-    // arrow going through target https://www.youtube.com/watch?v=bI0i2jRYTeA
-    // airhorn (2-3 seconds) https://www.youtube.com/watch?v=OFr74zI1LBM
-    // trumpet (2 seconds) https://www.youtube.com/watch?v=gTFoHCyXTIY
     DEFAULT("default", null),
     SILENT("silent", null),
     AMONGUS("among us", "amongus.wav"),

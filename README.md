@@ -1,2 +1,3 @@
-# Example
-An example greeter plugin
+# Bolt Sounds
+Override sounds made by crossbows
+
