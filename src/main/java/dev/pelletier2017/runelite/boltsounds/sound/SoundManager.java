@@ -20,7 +20,7 @@ public class SoundManager {
     @Inject
     private BoltSoundConfig config;
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private ExecutorService executorService = Executors.newFixedThreadPool(3);
 
 //    private static Clip clip;
 

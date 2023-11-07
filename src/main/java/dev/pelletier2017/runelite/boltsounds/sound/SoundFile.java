@@ -7,6 +7,8 @@ import java.util.Optional;
 
 @Getter
 public enum SoundFile {
+    // requirements (needs to be 2 ticks or less or else they overlap a lot)
+
     // website to make wave files
     // youtube downloader https://ytmp3.nu/8zCl/
     // clip audio https://clideo.com/project/184013676/result
