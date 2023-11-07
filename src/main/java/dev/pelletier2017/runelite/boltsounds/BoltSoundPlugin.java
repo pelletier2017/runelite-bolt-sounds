@@ -83,6 +83,11 @@ public class BoltSoundPlugin extends Plugin {
             log.info("Crossbow sound");
             playSound(config.crossbowSound(), event);
 
+            // TODO remove dart sound
+        } else if (id == RunescapeSound.DART.getSoundId()) {
+            log.info("DART sound");
+            playSound(config.crossbowSound(), event);
+
         } else if (id == RunescapeSound.RUBY_PROC.getSoundId()) {
             log.info("Ruby proc sound");
             playSound(config.rubyProcSound(), event);

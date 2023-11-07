@@ -20,9 +20,9 @@ public class SoundManager {
     @Inject
     private BoltSoundConfig config;
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(5);
+    private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-    private static Clip clip;
+//    private static Clip clip;
 
     public void play(String soundName) {
         Optional<SoundFile> soundFile = SoundFile.byName(soundName);
@@ -52,12 +52,6 @@ public class SoundManager {
 
         try {
             log.info("Playing=" + soundFile.getFileName());
-            if (clip != null) {
-                executorService.submit(() -> {
-                    clip.close();
-                });
-            }
-
             if (soundFile.equals(SoundFile.SILENT)) {
                 log.info("Playing SILENT sound");
                 return;
@@ -76,9 +70,10 @@ public class SoundManager {
             AudioFormat format = stream.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, format);
 
-            clip = (Clip) AudioSystem.getLine(info);
+            Clip clip = (Clip) AudioSystem.getLine(info);
 
             executorService.submit(() -> {
+                log.info("start on thread playing=" + soundFile.getFileName());
                 try {
                     clip.open(stream);
                 } catch (LineUnavailableException | IOException e) {
@@ -89,7 +84,26 @@ public class SoundManager {
                 float volumeValue = (float) (volume.getMinimum() + ((50 + (config.volumeLevel() / 2.0)) * ((volume.getMaximum() - volume.getMinimum()) / 100)));
                 volume.setValue(volumeValue);
 
-                clip.start();
+                while (!clip.isRunning()) {
+                    clip.start();
+                }
+
+                executorService.submit(() -> {
+                    log.info("start closing=" + soundFile.getFileName());
+                    while (clip.isRunning()) {
+                        try {
+                            log.info("Sleeping waiting to close");
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    log.info("No longer running");
+
+                    clip.close();
+                    log.info("done closing=" + soundFile.getFileName());
+                });
+                log.info("done on thread playing=" + soundFile.getFileName());
             });
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -98,8 +112,6 @@ public class SoundManager {
     }
 
     public void shutdown() {
-        if (clip != null && clip.isOpen()) {
-            clip.close();
-        }
+        executorService.shutdown();
     }
 }
