@@ -1,9 +1,6 @@
 package dev.pelletier2017.runelite.boltsounds;
 
 import com.google.inject.Provides;
-
-import javax.inject.Inject;
-
 import dev.pelletier2017.runelite.boltsounds.sound.RunescapeSound;
 import dev.pelletier2017.runelite.boltsounds.sound.SoundFile;
 import dev.pelletier2017.runelite.boltsounds.sound.SoundManager;
@@ -16,6 +13,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+import javax.inject.Inject;
 import java.util.Random;
 
 @Slf4j
@@ -23,11 +21,6 @@ import java.util.Random;
         name = "Bolt Sound"
 )
 public class BoltSoundPlugin extends Plugin {
-
-	// TODO dropdown menu options for sounds
-	// TODO add one sound effect for crossbow attack sound
-	// TODO get IDs for ruby proc, acb spec, zcb spec, (acb proc, zcb proc if theyre dif)
-    // TODO sounds for gunshot (cock + shot, shotgun), space lazer, starwars blasters, tai fighter, flamethrower sound, arrow sounds or wooshes, vayne sound effect
 
     @Inject
     private Client client;
@@ -41,7 +34,7 @@ public class BoltSoundPlugin extends Plugin {
     @Subscribe
     public void onCommandExecuted(CommandExecuted event) throws InterruptedException {
         String command = event.getCommand();
-        log.info("onCommandExecuted=" + command);
+        log.debug("onCommandExecuted=" + command);
         if (command.equals("boltsound")) {
             soundManager.play(randomSound());
         }
@@ -64,20 +57,13 @@ public class BoltSoundPlugin extends Plugin {
 
     @Subscribe
     public void onSoundEffectPlayed(SoundEffectPlayed event) {
-        log.info("Sound Played = " + event.getSoundId());
+        log.debug("Sound Played = " + event.getSoundId());
         int id = event.getSoundId();
 
         if (id == RunescapeSound.CROSSBOW.getSoundId()) {
-            log.info("Crossbow sound");
-            playSound(config.crossbowSound(), event);
-
-            // TODO remove dart sound
-        } else if (id == RunescapeSound.DART.getSoundId()) {
-            log.info("DART sound");
             playSound(config.crossbowSound(), event);
 
         } else if (id == RunescapeSound.RUBY_PROC.getSoundId()) {
-            log.info("Ruby proc sound");
             playSound(config.rubyProcSound(), event);
 
         } else if (id == RunescapeSound.DIAMOND_PROC.getSoundId()) {
@@ -99,7 +85,7 @@ public class BoltSoundPlugin extends Plugin {
 
     private void playSound(SoundFile soundFile, SoundEffectPlayed event) {
         if (soundFile.equals(SoundFile.DEFAULT)) {
-            log.info("Default sound, doing nothing");
+            log.debug("Default sound, doing nothing");
             return;
         }
         event.consume();

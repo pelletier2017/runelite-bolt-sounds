@@ -3,36 +3,24 @@ package dev.pelletier2017.runelite.boltsounds.sound;
 import lombok.Getter;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Getter
 public enum SoundFile {
-    DEFAULT("default", null),
-    SILENT("silent", null),
-    AMONGUS("among us", "amongus.wav"),
-    DC17_BLASTER("dc17 blaster", "dc17Blaster.wav"),
-    GUNSHOT3("gunshot3", "gunshot3.wav"),
-    LAZER_CANNON("lazer cannon", "lazercannon.wav"),
-    PEW("pew", "pew.wav"),
-    PISTOL_RICCOCHET("pistol riccochet", "pistol_riccochet.wav"),
-    STARWARS_BLASTER("starwars blaster", "starwarsBlaster.wav"),
+    DEFAULT(null),
+    SILENT(null),
+    AMONGUS("amongus.wav"),
+    DC17_BLASTER("dc17Blaster.wav"),
+    GUNSHOT("gunshot3.wav"),
+    LAZER_CANNON("lazercannon.wav"),
+    PEW("pew.wav"),
+    PISTOL_RICOCHET("pistol_riccochet.wav"),
+    STARWARS_BLASTER("starwarsBlaster.wav"),
     ;
 
-    private final String soundName;
     private final String fileName;
 
-    SoundFile(String soundName, String fileName) {
-        this.soundName = soundName;
+    SoundFile(String fileName) {
         this.fileName = fileName;
-    }
-
-    public static Optional<SoundFile> byName(String soundName) {
-        for (SoundFile soundFile : SoundFile.values()) {
-            if (soundFile.soundName.equals(soundName)) {
-                return Optional.of(soundFile);
-            }
-        }
-        return Optional.empty();
     }
 
     public static SoundFile[] playableSounds() {

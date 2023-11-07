@@ -9,7 +9,6 @@ import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,17 +20,6 @@ public class SoundManager {
     private BoltSoundConfig config;
 
     private ExecutorService executorService = Executors.newFixedThreadPool(3);
-
-//    private static Clip clip;
-
-    public void play(String soundName) {
-        Optional<SoundFile> soundFile = SoundFile.byName(soundName);
-        if (soundFile.isEmpty()) {
-            throw new IllegalArgumentException(String.format("Sound name [%s] not found", soundName));
-        } else {
-            play(soundFile.get());
-        }
-    }
 
     public void playAll(int delayMs) {
         executorService.submit(() -> {
@@ -47,13 +35,11 @@ public class SoundManager {
 
     }
 
-    // borrowed from https://github.com/Himonn/Imbued-Fart/blob/master/src/main/java/com/imbuedfart/ImbuedFartPlugin.java
     public void play(SoundFile soundFile) {
-
         try {
-            log.info("Playing=" + soundFile.getFileName());
+            log.debug("Playing=" + soundFile.getFileName());
             if (soundFile.equals(SoundFile.SILENT)) {
-                log.info("Playing SILENT sound");
+                log.debug("Playing SILENT sound");
                 return;
             }
 
@@ -73,7 +59,7 @@ public class SoundManager {
             Clip clip = (Clip) AudioSystem.getLine(info);
 
             executorService.submit(() -> {
-                log.info("start on thread playing=" + soundFile.getFileName());
+                log.debug("start on thread playing=" + soundFile.getFileName());
                 try {
                     clip.open(stream);
                 } catch (LineUnavailableException | IOException e) {
@@ -84,26 +70,27 @@ public class SoundManager {
                 float volumeValue = (float) (volume.getMinimum() + ((50 + (config.volumeLevel() / 2.0)) * ((volume.getMaximum() - volume.getMinimum()) / 100)));
                 volume.setValue(volumeValue);
 
+                // clip.start() fails when multiple sounds are playing
                 while (!clip.isRunning()) {
                     clip.start();
                 }
 
                 executorService.submit(() -> {
-                    log.info("start closing=" + soundFile.getFileName());
+                    log.debug("start closing=" + soundFile.getFileName());
                     while (clip.isRunning()) {
                         try {
-                            log.info("Sleeping waiting to close");
+                            log.debug("Sleeping waiting to close");
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                    log.info("No longer running");
+                    log.debug("No longer running");
 
                     clip.close();
-                    log.info("done closing=" + soundFile.getFileName());
+                    log.debug("done closing=" + soundFile.getFileName());
                 });
-                log.info("done on thread playing=" + soundFile.getFileName());
+                log.debug("done on thread playing=" + soundFile.getFileName());
             });
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
