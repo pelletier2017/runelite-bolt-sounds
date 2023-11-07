@@ -110,8 +110,4 @@ public class SoundManager {
             e.printStackTrace();
         }
     }
-
-    public void shutdown() {
-        executorService.shutdown();
-    }
 }

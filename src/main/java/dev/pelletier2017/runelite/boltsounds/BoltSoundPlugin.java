@@ -46,7 +46,6 @@ public class BoltSoundPlugin extends Plugin {
     @Override
     protected void shutDown() throws Exception {
         log.info("Example stopped!");
-        soundManager.shutdown();
     }
 
     @Subscribe
