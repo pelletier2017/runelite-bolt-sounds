@@ -18,7 +18,7 @@ import java.util.Random;
 
 @Slf4j
 @PluginDescriptor(
-        name = "Bolt Sound"
+        name = "Bolt Sounds"
 )
 public class BoltSoundPlugin extends Plugin {
 
